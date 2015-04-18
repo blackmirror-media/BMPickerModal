@@ -23,7 +23,13 @@ pod 'BMPickerModal'
 
 ```Swift
 var datePickerModal = BMPickerModal()
+datePickerModal?.mode = .DatePicker
 ```
+
+Available modes:
+* `.DatePicker` - Default
+* `.Picker` 
+
 
 #### Showing On The iPhone
 
@@ -66,10 +72,6 @@ let inPopover: Bool = datePickerModal.shownInPopover
 datePickerModal?.dismiss()
 ```
 
-Available styles:
-* `.PlainTextInput` - Simple text field
-* `.NumberInput` - Text field accepting numbers only - numeric keyboard
-
 #### Customising the DatePicker
 
 Access the UIDatePicker view and cusomise as per the Apple documentation.
@@ -77,3 +79,9 @@ Access the UIDatePicker view and cusomise as per the Apple documentation.
 ```Swift
 datePickerModal?.datePicker.datePickerMode = UIDatePickerMode.Date
 ```
+
+#### Customising the Picker
+
+Set the `pickerDataSource` NSArray property for filling the UIPickerView.
+
+
