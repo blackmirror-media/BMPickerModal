@@ -9,15 +9,15 @@
 import Foundation
 import UIKit
 
+public enum BMPickerModalMode {
+    case DatePicker
+    case Picker
+}
+
 public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
 
-    public enum BMPickerModalMode {
-        case DatePicker
-        case Picker
-    }
-
     /// Closure to be executed when new date is selected
-    public var selectionClosure: ((AnyObject) -> Void)?
+    public var onSelection: ((AnyObject) -> Void)?
     public var shownInPopover: Bool = false
 
     public var mode: BMPickerModalMode = .DatePicker
@@ -30,7 +30,6 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
 
     private let window: UIWindow = UIApplication.sharedApplication().windows[0] as! UIWindow
     private let popoverSize: CGSize = CGSizeMake(460, 261)
-    private var ios7Popover: UIPopoverController?
 
     // MARK: View Life Cycle
 
@@ -89,13 +88,13 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
     // MARK: User Actions
 
     func save () {
-        if self.selectionClosure != nil {
+        if self.onSelection != nil {
 
             if self.mode == .DatePicker {
-                self.selectionClosure!(self.datePicker.date)
+                self.onSelection!(self.datePicker.date)
             }
             else if self.mode == .Picker {
-                self.selectionClosure!(self.selectedPickerValueIndex)
+                self.onSelection!(self.selectedPickerValueIndex)
             }
 
         }
@@ -111,14 +110,14 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
     /**
     Shows the date picker modal in a popover controller and sets the completion block.
 
-    :param: selection  Selected Date
+    :param: selection  Closure to be executed when date/data is selectes
     :param: sourceView view to show from
     :param: sourceRect rect to align to
-    :param: inView viewController used to present it from
+    :param: inViewController viewController used to present the modal
     */
     public func showInPopover (selection: ((AnyObject) -> Void)?, sourceView: UIView, sourceRect: CGRect, inViewController: UIViewController?) {
         self.shownInPopover = true
-        self.selectionClosure = selection
+        self.onSelection = selection
 
         self.modalPresentationStyle = .Popover
         self.preferredContentSize = self.popoverSize
@@ -129,22 +128,14 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
             viewController = self.window.rootViewController!
         }
 
-        let isIOS7 = floor(NSFoundationVersionNumber) <= floor(NSFoundationVersionNumber_iOS_7_1)
+        var popover = self.popoverPresentationController
+        popover?.delegate = self
+        popover?.sourceView = sourceView
+        popover?.sourceRect = sourceRect
 
-        if isIOS7 {
-            self.ios7Popover = UIPopoverController(contentViewController: self)
-            self.ios7Popover!.presentPopoverFromRect(sourceRect, inView: sourceView, permittedArrowDirections: UIPopoverArrowDirection.Any, animated: true)
-        }
-        else {
-            var popover = self.popoverPresentationController
-            popover?.delegate = self
-            popover?.sourceView = sourceView
-            popover?.sourceRect = sourceRect
-
-            viewController!.presentViewController(self, animated: true, completion: { () -> Void in
-                // nothing here
-            })
-        }
+        viewController!.presentViewController(self, animated: true, completion: { () -> Void in
+            // nothing here
+        })
     }
 
     /**
@@ -153,7 +144,7 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
     :param: selection closure to be executed when new date is selected
     */
     public func show (selection: ((AnyObject) -> Void)?) {
-        self.selectionClosure = selection
+        self.onSelection = selection
 
         self.view.alpha = 0.0
         window.addSubview(self.view)
@@ -168,15 +159,8 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
     public func dismiss () {
 
         if self.shownInPopover {
-
             self.shownInPopover = false
-            let isIOS7 = floor(NSFoundationVersionNumber) <= floor(NSFoundationVersionNumber_iOS_7_1)
-            if isIOS7 {
-                self.ios7Popover?.dismissPopoverAnimated(true)
-            }
-            else {
-                self.dismissViewControllerAnimated(true, completion: nil)
-            }
+            self.dismissViewControllerAnimated(true, completion: nil)
         }
         else {
             UIView.animateWithDuration(0.3,
@@ -184,7 +168,7 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
                     self.view.alpha = 0.0;
                 }) { (completed) -> Void in
                     self.view.removeFromSuperview()
-                }
+            }
         }
     }
 
@@ -201,7 +185,7 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
     public func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
         return self.pickerDataSource?.objectAtIndex(row) as! NSString as String
     }
-
+    
     public func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         self.selectedPickerValueIndex = row
     }
