@@ -9,12 +9,12 @@
 import Foundation
 import UIKit
 
-public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
+public enum BMPickerModalMode {
+    case DatePicker
+    case Picker
+}
 
-    public enum BMPickerModalMode {
-        case DatePicker
-        case Picker
-    }
+public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
 
     /// Closure to be executed when new date is selected
     public var selectionClosure: ((AnyObject) -> Void)?
@@ -30,7 +30,6 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
 
     private let window: UIWindow = UIApplication.sharedApplication().windows[0] as! UIWindow
     private let popoverSize: CGSize = CGSizeMake(460, 261)
-    private var ios7Popover: UIPopoverController?
 
     // MARK: View Life Cycle
 
@@ -129,22 +128,14 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
             viewController = self.window.rootViewController!
         }
 
-        let isIOS7 = floor(NSFoundationVersionNumber) <= floor(NSFoundationVersionNumber_iOS_7_1)
+        var popover = self.popoverPresentationController
+        popover?.delegate = self
+        popover?.sourceView = sourceView
+        popover?.sourceRect = sourceRect
 
-        if isIOS7 {
-            self.ios7Popover = UIPopoverController(contentViewController: self)
-            self.ios7Popover!.presentPopoverFromRect(sourceRect, inView: sourceView, permittedArrowDirections: UIPopoverArrowDirection.Any, animated: true)
-        }
-        else {
-            var popover = self.popoverPresentationController
-            popover?.delegate = self
-            popover?.sourceView = sourceView
-            popover?.sourceRect = sourceRect
-
-            viewController!.presentViewController(self, animated: true, completion: { () -> Void in
-                // nothing here
-            })
-        }
+        viewController!.presentViewController(self, animated: true, completion: { () -> Void in
+            // nothing here
+        })
     }
 
     /**
@@ -168,15 +159,8 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
     public func dismiss () {
 
         if self.shownInPopover {
-
             self.shownInPopover = false
-            let isIOS7 = floor(NSFoundationVersionNumber) <= floor(NSFoundationVersionNumber_iOS_7_1)
-            if isIOS7 {
-                self.ios7Popover?.dismissPopoverAnimated(true)
-            }
-            else {
-                self.dismissViewControllerAnimated(true, completion: nil)
-            }
+            self.dismissViewControllerAnimated(true, completion: nil)
         }
         else {
             UIView.animateWithDuration(0.3,
@@ -184,7 +168,7 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
                     self.view.alpha = 0.0;
                 }) { (completed) -> Void in
                     self.view.removeFromSuperview()
-                }
+            }
         }
     }
 
@@ -201,7 +185,7 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
     public func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
         return self.pickerDataSource?.objectAtIndex(row) as! NSString as String
     }
-
+    
     public func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         self.selectedPickerValueIndex = row
     }
