@@ -17,7 +17,7 @@ public enum BMPickerModalMode {
 public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
 
     /// Closure to be executed when new date is selected
-    public var selectionClosure: ((AnyObject) -> Void)?
+    public var onSelection: ((AnyObject) -> Void)?
     public var shownInPopover: Bool = false
 
     public var mode: BMPickerModalMode = .DatePicker
@@ -88,13 +88,13 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
     // MARK: User Actions
 
     func save () {
-        if self.selectionClosure != nil {
+        if self.onSelection != nil {
 
             if self.mode == .DatePicker {
-                self.selectionClosure!(self.datePicker.date)
+                self.onSelection!(self.datePicker.date)
             }
             else if self.mode == .Picker {
-                self.selectionClosure!(self.selectedPickerValueIndex)
+                self.onSelection!(self.selectedPickerValueIndex)
             }
 
         }
@@ -110,14 +110,14 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
     /**
     Shows the date picker modal in a popover controller and sets the completion block.
 
-    :param: selection  Selected Date
+    :param: selection  Closure to be executed when date/data is selectes
     :param: sourceView view to show from
     :param: sourceRect rect to align to
-    :param: inView viewController used to present it from
+    :param: inViewController viewController used to present the modal
     */
     public func showInPopover (selection: ((AnyObject) -> Void)?, sourceView: UIView, sourceRect: CGRect, inViewController: UIViewController?) {
         self.shownInPopover = true
-        self.selectionClosure = selection
+        self.onSelection = selection
 
         self.modalPresentationStyle = .Popover
         self.preferredContentSize = self.popoverSize
@@ -144,7 +144,7 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
     :param: selection closure to be executed when new date is selected
     */
     public func show (selection: ((AnyObject) -> Void)?) {
-        self.selectionClosure = selection
+        self.onSelection = selection
 
         self.view.alpha = 0.0
         window.addSubview(self.view)
