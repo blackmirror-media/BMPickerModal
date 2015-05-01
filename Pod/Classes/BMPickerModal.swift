@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-public enum BMPickerModalMode {
+@objc public enum BMPickerModalMode: Int {
     case DatePicker
     case Picker
 }
@@ -20,7 +20,7 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
     public var onSelection: ((AnyObject) -> Void)?
     public var shownInPopover: Bool = false
 
-    public var mode: BMPickerModalMode = .DatePicker
+    @objc public var mode: BMPickerModalMode = .DatePicker
     public var datePicker: UIDatePicker = UIDatePicker()
 
     public var picker: UIPickerView = UIPickerView()

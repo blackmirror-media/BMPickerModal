@@ -5,19 +5,26 @@ BMPickerModal is an iOS drop-in class that displays a UIPicker or a UIDatePicker
 
 ## Requirements
 
-Built in Swift 1.2 for iOS 8.1+. All devices supported.
+Built in Swift 1.2 for iOS 8.0+. All devices supported. can be used in both Swift and in ObjectiveC projects.
 
 ## Adding BMPickerModal To Your Project
 
 ### Cocoapods
 
-CocoaPods is the recommended way to add BMPickerModal to your project. 
+CocoaPods is the recommended way to add BMPickerModal to your project. As BMPickerModal is written in Swift, you need to add the `use_frameworks!` option to your podfile.
 
 ```
 pod 'BMPickerModal'
 ```
 
 ### Usage 
+
+
+Import the module to your project.
+
+```Swift
+@import BMPickerModal
+```
 
 #### Creating 
 
