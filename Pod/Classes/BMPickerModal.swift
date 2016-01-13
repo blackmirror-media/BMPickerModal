@@ -28,7 +28,7 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
     public var isVisible: Bool = false
     private var selectedPickerValueIndex: Int = 0
 
-    private let window: UIWindow = UIApplication.sharedApplication().windows[0] as! UIWindow
+    private let window: UIWindow = UIApplication.sharedApplication().windows[0]
     private let popoverSize: CGSize = CGSizeMake(460, 261)
 
     // MARK: View Life Cycle
@@ -68,7 +68,7 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
 
         self.isVisible = true
 
-        var cancelButton: UIButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
+		let cancelButton: UIButton = UIButton(type:.System)
         cancelButton.setTitle(NSLocalizedString("Cancel", comment: ""), forState: .Normal)
         cancelButton.frame = CGRectMake(5, 5, 100, 30);
         cancelButton.titleLabel?.textAlignment = NSTextAlignment.Left;
@@ -76,7 +76,7 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
         //cancelButton.setTitleColor(UIColor.greenColor(), forState: .Normal)
         self.view.addSubview(cancelButton)
 
-        var saveButton: UIButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
+		let saveButton: UIButton = UIButton(type:.System)
         saveButton.setTitle(NSLocalizedString("Save", comment: ""), forState: .Normal)
         saveButton.frame = CGRectMake(self.view.frame.size.width - 90, 5, 100, 30);
         saveButton.titleLabel?.textAlignment = NSTextAlignment.Right;
@@ -128,7 +128,7 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
             viewController = self.window.rootViewController!
         }
 
-        var popover = self.popoverPresentationController
+        let popover = self.popoverPresentationController
         popover?.delegate = self
         popover?.sourceView = sourceView
         popover?.sourceRect = sourceRect
@@ -182,7 +182,7 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
         return self.pickerDataSource?.count ?? 0
     }
 
-    public func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
+    public func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return self.pickerDataSource?.objectAtIndex(row) as! NSString as String
     }
     
