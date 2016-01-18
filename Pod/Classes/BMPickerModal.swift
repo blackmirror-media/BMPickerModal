@@ -19,7 +19,8 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
     /// Closure to be executed when new date is selected
     public var onSelection: ((AnyObject) -> Void)?
     public var shownInPopover: Bool = false
-
+	public var pickerBackgroundView: UIView!
+	
     @objc public var mode: BMPickerModalMode = .DatePicker
     public var datePicker: UIDatePicker = UIDatePicker()
 
@@ -28,7 +29,7 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
     public var isVisible: Bool = false
     private var selectedPickerValueIndex: Int = 0
 
-    private let window: UIWindow = UIApplication.sharedApplication().windows[0]
+    private let window: UIWindow = UIApplication.sharedApplication().keyWindow!
     private let popoverSize: CGSize = CGSizeMake(460, 261)
 
     // MARK: View Life Cycle
@@ -36,25 +37,56 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
     override public func viewDidLoad() {
         super.viewDidLoad()
 
-        var pickerSize = self.window.frame.size
-
+		let viewFrame = self.window.frame
+		
+		self.view.frame = viewFrame
+		self.view.backgroundColor = UIColor.init(white: 0, alpha: 0.5)
+		
+		let pickerFrame = CGRectMake(0, viewFrame.height - 260, viewFrame.width, 260)
+		var pickerSize = pickerFrame.size
+		
         if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
             pickerSize = self.popoverSize
-        }
-
-        self.view.frame = CGRectMake(0, pickerSize.height - 260, pickerSize.width, 260)
-        self.view.backgroundColor = UIColor.whiteColor()
-
+		}
+		
+		let backgroundGestureView = UIView.init(frame: CGRectMake(0, 0, viewFrame.width, viewFrame.height - 260))
+		backgroundGestureView.backgroundColor = UIColor.clearColor()
+		self.view.addSubview(backgroundGestureView)
+		
+		let tapGestureRecognizer = UITapGestureRecognizer.init(target: self, action: "dismiss")
+		tapGestureRecognizer.numberOfTapsRequired = 1
+		backgroundGestureView.addGestureRecognizer(tapGestureRecognizer)
+		
+		self.pickerBackgroundView = UIView.init(frame: pickerFrame)
+		self.pickerBackgroundView.backgroundColor = UIColor.whiteColor()
+		self.view.addSubview(self.pickerBackgroundView)
+		
         if self.mode == .DatePicker {
             self.datePicker.frame = CGRectMake(0, 30, pickerSize.width, 260);
-            self.view.addSubview(self.datePicker)
+			self.pickerBackgroundView.addSubview(self.datePicker)
         }
         else if self.mode == .Picker {
             self.picker.frame = CGRectMake(0, 30, pickerSize.width, 260);
             self.picker.dataSource = self;
             self.picker.delegate = self;
-            self.view.addSubview(self.picker)
+            self.pickerBackgroundView.addSubview(self.picker)
         }
+		
+		let cancelButton: UIButton = UIButton(type:.System)
+		cancelButton.setTitle(NSLocalizedString("Cancel", comment: ""), forState: .Normal)
+		cancelButton.frame = CGRectMake(5, 5, 80, 30);
+		cancelButton.titleLabel?.textAlignment = NSTextAlignment.Left;
+		cancelButton.addTarget(self, action: "dismiss", forControlEvents: UIControlEvents.TouchUpInside);
+		//cancelButton.setTitleColor(UIColor.greenColor(), forState: .Normal)
+		self.pickerBackgroundView.addSubview(cancelButton)
+		
+		let saveButton: UIButton = UIButton(type:.System)
+		saveButton.setTitle(NSLocalizedString("Save", comment: ""), forState: .Normal)
+		saveButton.frame = CGRectMake(self.view.frame.size.width - 90, 5, 80, 30);
+		saveButton.titleLabel?.textAlignment = NSTextAlignment.Right;
+		saveButton.addTarget(self, action: "save", forControlEvents: UIControlEvents.TouchUpInside);
+		//saveButton.setTitleColor(UIColor.greenColor(), forState: .Normal)
+		self.pickerBackgroundView.addSubview(saveButton)
     }
 
     override public func viewDidDisappear(animated: Bool) {
@@ -67,22 +99,6 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
         super.viewWillAppear(animated)
 
         self.isVisible = true
-
-		let cancelButton: UIButton = UIButton(type:.System)
-        cancelButton.setTitle(NSLocalizedString("Cancel", comment: ""), forState: .Normal)
-        cancelButton.frame = CGRectMake(5, 5, 100, 30);
-        cancelButton.titleLabel?.textAlignment = NSTextAlignment.Left;
-        cancelButton.addTarget(self, action: "dismiss", forControlEvents: UIControlEvents.TouchUpInside);
-        //cancelButton.setTitleColor(UIColor.greenColor(), forState: .Normal)
-        self.view.addSubview(cancelButton)
-
-		let saveButton: UIButton = UIButton(type:.System)
-        saveButton.setTitle(NSLocalizedString("Save", comment: ""), forState: .Normal)
-        saveButton.frame = CGRectMake(self.view.frame.size.width - 90, 5, 100, 30);
-        saveButton.titleLabel?.textAlignment = NSTextAlignment.Right;
-        saveButton.addTarget(self, action: "save", forControlEvents: UIControlEvents.TouchUpInside);
-        //saveButton.setTitleColor(UIColor.greenColor(), forState: .Normal)
-        self.view.addSubview(saveButton)
     }
 
     // MARK: User Actions
