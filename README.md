@@ -9,7 +9,7 @@ Built in Swift 1.2 for iOS 8.0+. All devices supported. can be used in both Swif
 
 ## Adding BMPickerModal To Your Project
 
-### Cocoapods
+### CocoaPods
 
 CocoaPods is the recommended way to add BMPickerModal to your project. As BMPickerModal is written in Swift, you need to add the `use_frameworks!` option to your podfile.
 
