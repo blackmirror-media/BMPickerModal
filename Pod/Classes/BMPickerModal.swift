@@ -9,6 +9,10 @@
 import Foundation
 import UIKit
 
+protocol BMPickerModalDelegate: class {
+    func bmPickerModalDismissed()
+}
+
 @objc public enum BMPickerModalMode: Int {
   case DatePicker
   case Picker
@@ -16,6 +20,8 @@ import UIKit
 
 public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
   
+  weak var delegate: BMPickerModalDelegate?
+    
   /// Closure to be executed when new date is selected
   public var onSelection: ((AnyObject) -> Void)?
   
@@ -135,7 +141,7 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
       }
       
     }
-    self.dismiss()
+    self.dismiss(nil)
   }
   
   
@@ -195,7 +201,7 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
   /**
    Closes the modal
    */
-  public func dismiss () {
+  public func dismiss (completion: (Void -> Void)?) {
     
     if self.shownInPopover {
       self.shownInPopover = false
@@ -208,6 +214,11 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
       }) { (completed) -> Void in
         self.view.removeFromSuperview()
       }
+    }
+    
+    self.delegate?.bmPickerModalDismissed()
+    if completion != nil {
+        completion!()
     }
   }
   
