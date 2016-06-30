@@ -141,7 +141,7 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
       }
       
     }
-    self.dismiss(nil)
+    self.dismiss()
   }
   
   
@@ -201,7 +201,7 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
   /**
    Closes the modal
    */
-  public func dismiss (completion: (Void -> Void)?) {
+  public func dismiss () {
     
     if self.shownInPopover {
       self.shownInPopover = false
@@ -217,9 +217,7 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
     }
     
     self.delegate?.bmPickerModalDismissed()
-    if completion != nil {
-        completion!()
-    }
+
   }
   
   // MARK: Picker View Delegates
