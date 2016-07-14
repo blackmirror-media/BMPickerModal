@@ -1,17 +1,27 @@
 # BMPickerModal
 
-BMPickerModal is an iOS drop-in class that displays a UIPicker or a UIDatePicker as modal view or in a popover controller on the iPad. Used to let the user select from a list of data or pick a date without leaving the current screen. Closures allow easy customisation.
+BMPickerModal is an iOS drop-in class that displays a UIPicker or a
+UIDatePicker as modal view or in a popover controller on the iPad. Used
+to let the user select from a list of data or pick a date without leaving the
+current screen. Closures allow easy customisation.
 
 
 ## Requirements
 
-Built in Swift 1.2 for iOS 8.0+. All devices supported. can be used in both Swift and in ObjectiveC projects.
+Built in Swift 3 for iOS 8.0+. All devices supported. can be used in both
+Swift and in ObjectiveC projects.
+
+You will need Xcode 8 for version 1.1.x and above.
+
+For older projects using Swift 2, use version 1.0.x.
 
 ## Adding BMPickerModal To Your Project
 
 ### Cocoapods
 
-CocoaPods is the recommended way to add BMPickerModal to your project. As BMPickerModal is written in Swift, you need to add the `use_frameworks!` option to your podfile.
+CocoaPods is the recommended way to add BMPickerModal to your project.
+As BMPickerModal is written in Swift, you need to add the `use_frameworks!`
+option to your podfile.
 
 ```
 pod 'BMPickerModal'
@@ -30,12 +40,12 @@ Import the module to your project.
 
 ```Swift
 var datePickerModal = BMPickerModal()
-datePickerModal?.mode = .DatePicker
+datePickerModal?.mode = .datePicker
 ```
 
 Available modes:
-* `.DatePicker` - Default
-* `.Picker` 
+* `.datePicker` - Default
+* `.picker` 
 
 
 #### Showing On The iPhone
@@ -79,12 +89,19 @@ let inPopover: Bool = datePickerModal.shownInPopover
 datePickerModal?.dismiss()
 ```
 
+You can add custom actions to the dismissal event by defining the onDismiss
+closure.
+
+```Swift
+datePickerModal?.ondismiss()
+```
+
 #### Customising the DatePicker
 
 Access the UIDatePicker view and cusomise as per the Apple documentation.
 
 ```Swift
-datePickerModal?.datePicker.datePickerMode = UIDatePickerMode.Date
+datePickerModal?.datePicker.datePickerMode = UIDatePickerMode.date
 ```
 
 #### Customising the Picker

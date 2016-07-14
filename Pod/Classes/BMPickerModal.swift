@@ -10,8 +10,8 @@ import Foundation
 import UIKit
 
 @objc public enum BMPickerModalMode: Int {
-  case DatePicker
-  case Picker
+  case datePicker
+  case picker
 }
 
 public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
@@ -26,7 +26,7 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
   public var isVisible: Bool = false
   
   /// Mode of the picker. DatePicker or simple Picker
-  @objc public var mode: BMPickerModalMode = .DatePicker
+  @objc public var mode: BMPickerModalMode = .datePicker
   
   /// The DatePicker itself
   public var datePicker: UIDatePicker = UIDatePicker()
@@ -44,13 +44,13 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
   public var cancelButtonTitle: String = "Cancel"
   
   /// Blur effect style of the modal. ExtraLight by default
-  public var blurEffectStyle: UIBlurEffectStyle = .ExtraLight
+  public var blurEffectStyle: UIBlurEffectStyle = .extraLight
   
   /// Blur view
   private var blurEffectView: UIVisualEffectView!
-  private let window: UIWindow = UIApplication.sharedApplication().windows[0]
+  private let window: UIWindow = UIApplication.shared().windows[0]
   /// Size of the popover on the iPad
-  private let popoverSize: CGSize = CGSizeMake(460, 261)
+  private let popoverSize: CGSize = CGSize(width: 460, height: 261)
   
   // MARK: View Life Cycle
   
@@ -62,19 +62,19 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
     
     var pickerSize = self.window.frame.size
     
-    if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+    if UIDevice.current().userInterfaceIdiom == .pad {
       pickerSize = self.popoverSize
     }
     
-    self.view.frame = CGRectMake(0, pickerSize.height - 260, pickerSize.width, 260)
-    self.blurEffectView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+    self.view.frame = CGRect(x: 0, y: pickerSize.height - 260, width: pickerSize.width, height: 260)
+    self.blurEffectView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height);
     
-    if self.mode == .DatePicker {
-      self.datePicker.frame = CGRectMake(0, 30, pickerSize.width, 260);
+    if self.mode == .datePicker {
+      self.datePicker.frame = CGRect(x: 0, y: 30, width: pickerSize.width, height: 260);
       self.blurEffectView.contentView.addSubview(self.datePicker)
     }
-    else if self.mode == .Picker {
-      self.picker.frame = CGRectMake(0, 30, pickerSize.width, 260);
+    else if self.mode == .picker {
+      self.picker.frame = CGRect(x: 0, y: 30, width: pickerSize.width, height: 260);
       self.picker.dataSource = self;
       self.picker.delegate = self;
       self.blurEffectView.contentView.addSubview(self.picker)
@@ -83,37 +83,37 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
     self.view.addSubview(blurEffectView)
   }
   
-  override public func viewDidDisappear(animated: Bool) {
+  override public func viewDidDisappear(_ animated: Bool) {
     self.shownInPopover = false
     self.isVisible = false
     super.viewDidDisappear(animated)
   }
   
-  override public func viewWillAppear(animated: Bool) {
+  override public func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     
     self.isVisible = true
     
-    let cancelButton: UIButton = UIButton(type: UIButtonType.System)
-    cancelButton.setTitle(self.cancelButtonTitle, forState: .Normal)
-    cancelButton.frame = CGRectMake(5, 5, 100, 30);
-    cancelButton.titleLabel?.textAlignment = NSTextAlignment.Left;
-    cancelButton.addTarget(self, action: #selector(BMPickerModal.dismiss), forControlEvents: UIControlEvents.TouchUpInside);
+    let cancelButton: UIButton = UIButton(type: UIButtonType.system)
+    cancelButton.setTitle(self.cancelButtonTitle, for: UIControlState())
+    cancelButton.frame = CGRect(x: 5, y: 5, width: 100, height: 30);
+    cancelButton.titleLabel?.textAlignment = NSTextAlignment.left;
+    cancelButton.addTarget(self, action: #selector(dismiss as Void -> Void), for: UIControlEvents.touchUpInside);
     
-    if self.blurEffectStyle == .Dark {
-      cancelButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
+    if self.blurEffectStyle == .dark {
+      cancelButton.setTitleColor(UIColor.black(), for: UIControlState())
     }
     
     self.blurEffectView.contentView.addSubview(cancelButton)
     
-    let saveButton: UIButton = UIButton(type: UIButtonType.System)
-    saveButton.setTitle(self.saveButtonTitle, forState: .Normal)
-    saveButton.frame = CGRectMake(self.view.frame.size.width - 90, 5, 100, 30);
-    saveButton.titleLabel?.textAlignment = NSTextAlignment.Right;
-    saveButton.addTarget(self, action: #selector(BMPickerModal.save), forControlEvents: UIControlEvents.TouchUpInside);
+    let saveButton: UIButton = UIButton(type: UIButtonType.system)
+    saveButton.setTitle(self.saveButtonTitle, for: UIControlState())
+    saveButton.frame = CGRect(x: self.view.frame.size.width - 90, y: 5, width: 100, height: 30);
+    saveButton.titleLabel?.textAlignment = NSTextAlignment.right;
+    saveButton.addTarget(self, action: #selector(BMPickerModal.save), for: UIControlEvents.touchUpInside);
     
-    if self.blurEffectStyle == .Dark {
-      saveButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
+    if self.blurEffectStyle == .dark {
+      saveButton.setTitleColor(UIColor.black(), for: UIControlState())
     }
     
     self.blurEffectView.contentView.addSubview(saveButton)
@@ -127,10 +127,10 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
   func save () {
     if self.onSelection != nil {
       
-      if self.mode == .DatePicker {
+      if self.mode == .datePicker {
         self.onSelection!(self.datePicker.date)
       }
-      else if self.mode == .Picker {
+      else if self.mode == .picker {
         self.onSelection!(self.selectedPickerValueIndex)
       }
       
@@ -154,11 +154,11 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
    - parameter sourceRect: rect to align to
    - parameter inViewController: viewController used to present the modal
    */
-  public func showInPopover (selection: ((AnyObject) -> Void)?, sourceView: UIView, sourceRect: CGRect, inViewController: UIViewController?) {
+  public func showInPopover (_ selection: ((AnyObject) -> Void)?, sourceView: UIView, sourceRect: CGRect, inViewController: UIViewController?) {
     self.shownInPopover = true
     self.onSelection = selection
     
-    self.modalPresentationStyle = .Popover
+    self.modalPresentationStyle = .popover
     self.preferredContentSize = self.popoverSize
     
     var viewController: UIViewController? = inViewController
@@ -172,7 +172,7 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
     popover?.sourceView = sourceView
     popover?.sourceRect = sourceRect
     
-    viewController!.presentViewController(self, animated: true, completion: { () -> Void in
+    viewController!.present(self, animated: true, completion: { () -> Void in
       // nothing here
     })
   }
@@ -182,12 +182,12 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
    
    - parameter selection: closure to be executed when new date is selected
    */
-  public func show (selection: ((AnyObject) -> Void)?) {
+  public func show (_ selection: ((AnyObject) -> Void)?) {
     self.onSelection = selection
     
     self.view.alpha = 0.0
     window.addSubview(self.view)
-    UIView.animateWithDuration(0.3, animations: { () -> Void in
+    UIView.animate(withDuration: 0.3, animations: { () -> Void in
       self.view.alpha = 1.0;
     })
   }
@@ -195,16 +195,16 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
   /**
    Closes the modal
    */
-  public func dismiss () {
+  public func dismiss() {
     
     if self.shownInPopover {
       self.shownInPopover = false
-      self.dismissViewControllerAnimated(true, completion: nil)
+      super.dismiss(animated: true, completion: nil)
     }
     else {
-      UIView.animateWithDuration(0.3,
-                                 animations: { () -> Void in
-                                  self.view.alpha = 0.0;
+      UIView.animate(withDuration: 0.3,
+                     animations: { () -> Void in
+                      self.view.alpha = 0.0;
       }) { (completed) -> Void in
         self.view.removeFromSuperview()
       }
@@ -213,19 +213,19 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
   
   // MARK: Picker View Delegates
   
-  public func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+  public func numberOfComponents(in pickerView: UIPickerView) -> Int {
     return 1
   }
   
-  public func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+  public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
     return self.pickerDataSource?.count ?? 0
   }
   
-  public func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-    return self.pickerDataSource?.objectAtIndex(row) as! NSString as String
+  public func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    return self.pickerDataSource?.object(at: row) as! NSString as String
   }
   
-  public func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+  public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
     self.selectedPickerValueIndex = row
   }
 }
