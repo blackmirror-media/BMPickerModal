@@ -48,7 +48,7 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
   
   /// Blur view
   private var blurEffectView: UIVisualEffectView!
-  private let window: UIWindow = UIApplication.shared().windows[0]
+  private let window: UIWindow = UIApplication.shared.windows[0]
   /// Size of the popover on the iPad
   private let popoverSize: CGSize = CGSize(width: 460, height: 261)
   
@@ -62,7 +62,7 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
     
     var pickerSize = self.window.frame.size
     
-    if UIDevice.current().userInterfaceIdiom == .pad {
+    if UIDevice.current.userInterfaceIdiom == .pad {
       pickerSize = self.popoverSize
     }
     
@@ -98,10 +98,10 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
     cancelButton.setTitle(self.cancelButtonTitle, for: UIControlState())
     cancelButton.frame = CGRect(x: 5, y: 5, width: 100, height: 30);
     cancelButton.titleLabel?.textAlignment = NSTextAlignment.left;
-    cancelButton.addTarget(self, action: #selector(dismiss as Void -> Void), for: UIControlEvents.touchUpInside);
+    cancelButton.addTarget(self, action: #selector(dismiss as (Void) -> Void), for: UIControlEvents.touchUpInside);
     
     if self.blurEffectStyle == .dark {
-      cancelButton.setTitleColor(UIColor.black(), for: UIControlState())
+      cancelButton.setTitleColor(UIColor.black, for: UIControlState())
     }
     
     self.blurEffectView.contentView.addSubview(cancelButton)
@@ -113,7 +113,7 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
     saveButton.addTarget(self, action: #selector(BMPickerModal.save), for: UIControlEvents.touchUpInside);
     
     if self.blurEffectStyle == .dark {
-      saveButton.setTitleColor(UIColor.black(), for: UIControlState())
+      saveButton.setTitleColor(UIColor.black, for: UIControlState())
     }
     
     self.blurEffectView.contentView.addSubview(saveButton)
@@ -128,10 +128,10 @@ public class BMPickerModal: UIViewController, UIPopoverPresentationControllerDel
     if self.onSelection != nil {
       
       if self.mode == .datePicker {
-        self.onSelection!(self.datePicker.date)
+        self.onSelection!(self.datePicker.date as AnyObject)
       }
       else if self.mode == .picker {
-        self.onSelection!(self.selectedPickerValueIndex)
+        self.onSelection!(self.selectedPickerValueIndex as AnyObject)
       }
       
     }
