@@ -8,12 +8,8 @@ current screen. Closures allow easy customisation.
 
 ## Requirements
 
-Built in Swift 3 for iOS 8.0+. All devices supported. can be used in both
+Built in Swift 4 for iOS 10.0+. All devices supported. can be used in both
 Swift and in ObjectiveC projects.
-
-You will need Xcode 8 for version 1.1.x and above.
-
-For older projects using Swift 2, use version 1.0.x.
 
 ## Adding BMPickerModal To Your Project
 

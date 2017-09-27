@@ -33,7 +33,7 @@ UIPickerViewDelegate {
   @objc public var mode: BMPickerModalMode = .datePicker
   
   /// The DatePicker itself
-  public var datePicker: UIDatePicker = UIDatePicker()
+  @objc public var datePicker: UIDatePicker = UIDatePicker()
   
   /// The Picker itself
   public var picker: UIPickerView = UIPickerView()
@@ -174,7 +174,7 @@ UIPickerViewDelegate {
   /**
    Opens the date picker modal
    */
-  public func show () {
+  @objc public func show () {
     self.show(nil)
   }
   
@@ -187,7 +187,7 @@ UIPickerViewDelegate {
    - parameter sourceRect: rect to align to
    - parameter inViewController: viewController used to present the modal
    */
-  public func showInPopover (
+  @objc public func showInPopover (
     _ selection: ((AnyObject) -> Void)?,
     sourceView: UIView,
     sourceRect: CGRect,
@@ -220,7 +220,7 @@ UIPickerViewDelegate {
    
    - parameter selection: closure to be executed when new date is selected
    */
-  public func show (_ selection: ((AnyObject) -> Void)?) {
+  @objc public func show (_ selection: ((AnyObject) -> Void)?) {
     self.onSelection = selection
     
     self.view.alpha = 0.0
