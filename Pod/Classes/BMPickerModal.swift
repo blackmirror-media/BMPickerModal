@@ -9,6 +9,10 @@
 import Foundation
 import UIKit
 
+protocol BMPickerModalDelegate: class {
+    func bmPickerModalDismissed()
+}
+
 @objc public enum BMPickerModalMode: Int {
   case datePicker
   case picker
@@ -20,6 +24,8 @@ UIPopoverPresentationControllerDelegate,
 UIPickerViewDataSource,
 UIPickerViewDelegate {
   
+  weak var delegate: BMPickerModalDelegate?
+    
   /// Closure to be executed when new date is selected
   public var onSelection: ((AnyObject) -> Void)?
   
@@ -247,6 +253,9 @@ UIPickerViewDelegate {
         self.view.removeFromSuperview()
       }
     }
+    
+    self.delegate?.bmPickerModalDismissed()
+
   }
   
   // MARK: Picker View Delegates
