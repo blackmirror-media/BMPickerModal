@@ -138,12 +138,10 @@ UIPickerViewDelegate {
       y: 5,
       width: 100,
       height: 30);
-    saveButton.titleLabel?.textAlignment = NSTextAlignment.right;
-    saveButton.addTarget(
-      self,
-      action: #selector(BMPickerModal.save),
-      for: UIControlEvents.touchUpInside);
-    
+
+    saveButton.titleLabel?.textAlignment = .right;
+    saveButton.addTarget(self, action: #selector(save), for: .touchUpInside)
+
     if self.blurEffectStyle == .dark {
       saveButton.setTitleColor(UIColor.black, for: UIControlState())
     }
@@ -156,7 +154,7 @@ UIPickerViewDelegate {
   /**
    Saving the value selected. Triggers the onSelection closure
    */
-  @objc func save () {
+  @objc public func save() {
     if self.onSelection != nil {
       
       if self.mode == .datePicker {
@@ -224,7 +222,7 @@ UIPickerViewDelegate {
     self.onSelection = selection
     
     self.view.alpha = 0.0
-    window.addSubview(self.view)
+    self.window.addSubview(self.view)
     UIView.animate(withDuration: 0.3, animations: { () -> Void in
       self.view.alpha = 1.0;
     })

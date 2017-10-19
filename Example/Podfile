@@ -1,0 +1,12 @@
+use_frameworks!
+platform :ios, '10.3'
+
+target 'BMPickerModal_Example' do
+  pod 'BMPickerModal', :path => '../'
+
+  target 'BMPickerModal_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end

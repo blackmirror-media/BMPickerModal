@@ -29,14 +29,31 @@ pod 'BMPickerModal'
 Import the module to your project.
 
 ```Swift
-@import BMPickerModal
+import BMPickerModal
 ```
 
 #### Creating 
 
+Create an optional stored property for your `BMPickerModal`. Then instantiate the control,
+when the your view is already added to the window. This is needed for the control to be
+added properly.
+
 ```Swift
-var datePickerModal = BMPickerModal()
-datePickerModal?.mode = .datePicker
+class SomeClass {
+  var datePickerModal: BMPickerModal?
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+
+    self.datePickerModal = BMPickerModal()
+    self.datePickerModal?.mode = .datePicker
+
+    self.datePickerModal?.show { selectedDate in
+      print(selectedDate)
+      // Do something with the date here
+    }
+  }
+}
 ```
 
 Available modes:
@@ -47,16 +64,16 @@ Available modes:
 #### Showing On The iPhone
 
 ```Swift
-datePickerModal?.show({ (selectedDate) -> Void in
-    let theNewDate = selectedDate as! NSDate
-    // Do something with the date here
-})
+datePickerModal?.show { selectedDate in
+  print(selectedDate)
+  // Do something with the date here
+}
 ```
 
 **Checking whether the control is visible**
 
 ```Swift
-let visible: Bool = datePickerModal.isVisible
+let visible: Bool = self.datePickerModal?.isVisible
 ```
 
 #### Showing On The iPad
@@ -67,29 +84,34 @@ let visible: Bool = datePickerModal.isVisible
 `inViewController`: ViewController used to present the modal
 
 ```Swift
-datePickerModal?.showInPopover({ (selectedDate) -> Void in
+self.datePickerModal?
+  .showInPopover({ (selectedDate) -> Void in
     let theNewDate = selectedDate as! NSDate
-    // Do something with the date here
-}, sourceView: self.view, sourceRect: cell!.frame, inViewController: self)
+  },
+  sourceView: self.view,
+  sourceRect: cell!.frame,
+  inViewController: self)
 ```
 
 **Checking whether the control is shown in a popover**
 
 ```Swift
-let inPopover: Bool = datePickerModal.shownInPopover
+let inPopover: Bool = self.datePickerModal.shownInPopover
 ```
 
 #### Dismissing
 
 ```Swift
-datePickerModal?.dismiss()
+self.datePickerModal?.dismiss()
 ```
 
 You can add custom actions to the dismissal event by defining the onDismiss
 closure.
 
 ```Swift
-datePickerModal?.ondismiss()
+self.datePickerModal?.onDismiss = {
+  // do stuff when dismissed
+}
 ```
 
 #### Customising the DatePicker
@@ -97,7 +119,7 @@ datePickerModal?.ondismiss()
 Access the UIDatePicker view and cusomise as per the Apple documentation.
 
 ```Swift
-datePickerModal?.datePicker.datePickerMode = UIDatePickerMode.date
+self.datePickerModal?.datePicker.datePickerMode = UIDatePickerMode.date
 ```
 
 #### Customising the Picker
