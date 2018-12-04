@@ -1,0 +1,33 @@
+{
+  'version': 0,
+  'case-sensitive': 'false',
+  'roots': [
+    {
+      'type': 'directory',
+      'name': "/Users/Danny/Documents/Xcode/BMPickerModal-develop/Example/build/Debug-iphoneos/BMPickerModal/BMPickerModal.framework/Headers",
+      'contents': [
+        {
+          'type': 'file',
+          'name': "BMPickerModal-Swift.h",
+          'external-contents': "/Users/Danny/Documents/Xcode/BMPickerModal-develop/Example/build/Debug-iphoneos/BMPickerModal/BMPickerModal.framework/Headers/BMPickerModal-Swift.h"
+        },
+        {
+          'type': 'file',
+          'name': "BMPickerModal-umbrella.h",
+          'external-contents': "/Users/Danny/Documents/Xcode/BMPickerModal-develop/Example/Pods/Target Support Files/BMPickerModal/BMPickerModal-umbrella.h"
+        }
+      ]
+    },
+    {
+      'type': 'directory',
+      'name': "/Users/Danny/Documents/Xcode/BMPickerModal-develop/Example/build/Debug-iphoneos/BMPickerModal/BMPickerModal.framework/Modules",
+      'contents': [
+        {
+          'type': 'file',
+          'name': "module.modulemap",
+          'external-contents': "/Users/Danny/Documents/Xcode/BMPickerModal-develop/Example/build/Pods.build/Debug-iphoneos/BMPickerModal.build/module.modulemap"
+        }
+      ]
+    }
+  ]
+}

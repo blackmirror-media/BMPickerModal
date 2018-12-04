@@ -1,0 +1,5 @@
+version: "Apple Swift version 4.2.1 (swiftlang-1000.11.42 clang-1000.11.45.1)"
+options: "54fee4070602c92ae5c7b06a425e5c4e"
+build_time: [1543922249, 608561000]
+inputs:
+  "/Users/Danny/Documents/Xcode/BMPickerModal-develop/BMPickerModal/Classes/BMPickerModal.swift": [1543922203, 0]

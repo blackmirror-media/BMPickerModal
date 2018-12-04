@@ -1,0 +1,10 @@
+framework module BMPickerModal {
+  umbrella header "BMPickerModal-umbrella.h"
+
+  export *
+  module * { export * }
+}
+
+module BMPickerModal.__Swift {
+    exclude header "BMPickerModal-Swift.h"
+}

@@ -1,0 +1,16 @@
+PODS:
+  - BMPickerModal (1.1.1)
+
+DEPENDENCIES:
+  - BMPickerModal (from `../`)
+
+EXTERNAL SOURCES:
+  BMPickerModal:
+    :path: ../
+
+SPEC CHECKSUMS:
+  BMPickerModal: 5af55ae0499d610e5e5539d869a02554ecffc60e
+
+PODFILE CHECKSUM: f5f12be7a0ee8c3cf4e41455bf8122db236861c8
+
+COCOAPODS: 1.4.0.beta.1
